@@ -1,0 +1,84 @@
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #141E30, #243B55);
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+/* Анимированный фон */
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(255,255,255,0.08), transparent 40%);
+    animation: moveBg 15s infinite linear;
+}
+
+@keyframes moveBg {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-25%, -25%); }
+}
+
+#slider {
+    position: relative;
+    padding: 40px 80px;
+    font-size: 28px;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    text-align: center;
+    min-width: 300px;
+    transition: all 0.5s ease;
+    animation: fadeSlide 1s ease;
+}
+
+/* Плавное появление текста */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+</head>
+<body>
+<div id="slider"></div>
+<script>
+  const data = [
+    'Добро пожаловать',
+    'Живи на полную',
+    'Улыбайся чаще',
+  ];
+
+  const slider = document.getElementById('slider');
+  let index = 0;
+
+  function showNext() {
+    // Вставляем текущий элемент
+    slider.textContent = data[index];
+
+    // Увеличиваем индекс по кругу
+    index = (index + 1) % data.length;
+  }
+
+  // Показываем первый элемент сразу
+  showNext();
+
+  // Запускаем таймер (каждую секунду)
+  setInterval(showNext, 1000);
+</script>
+</body>
+</html>

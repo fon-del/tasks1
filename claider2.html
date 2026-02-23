@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Автослайдер</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .slider {
+      position: relative;
+      width: 600px;
+      max-width: 90%;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      background: #fff;
+    }
+
+    .slider img {
+      width: 100%;
+      display: block;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 24px;
+      border-radius: 50%;
+      user-select: none;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    .arrow:hover {
+      background: rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slider">
+    <button class="arrow prev">&#10094;</button>
+    <img id="sliderImage" src="" alt="Слайд">
+    <button class="arrow next">&#10095;</button>
+  </div>
+
+  <script>
+    const images = [
+      "https://www.kitgrafik.com/wp-content/uploads/2021/05/gmao.jpg",
+      "https://img.freepik.com/free-vector/programming-concept-illustration_114360-1325.jpg",
+      "https://tse2.mm.bing.net/th/id/OIP.gBSNSU5R9f3QP_LlP7izRwHaFL?w=1920&h=1344&rs=1&pid=ImgDetMain&o=7&rm=3",
+    ];
+    const sliderImage = document.getElementById("sliderImage");
+    const prevBtn = document.querySelector(".prev");
+    const nextBtn = document.querySelector(".next");
+
+    let currentIndex = 0;
+    let interval;
+
+    function showImage(index) {
+      sliderImage.style.opacity = 0;
+      setTimeout(() => {
+        sliderImage.src = images[index];
+        sliderImage.style.opacity = 1;
+      }, 200);
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage(currentIndex);
+    }
+
+    function startSlider() {
+      interval = setInterval(nextImage, 1000);
+    }
+
+    function resetSlider() {
+      clearInterval(interval);
+      startSlider();
+    }
+
+    nextBtn.addEventListener("click", () => {
+      nextImage();
+      resetSlider();
+    });
+
+    prevBtn.addEventListener("click", () => {
+      prevImage();
+      resetSlider();
+    });
+
+    // Инициализация
+    showImage(currentIndex);
+    startSlider();
+  </script>
+
+</body>
+</html>
