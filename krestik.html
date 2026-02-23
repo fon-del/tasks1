@@ -5,4 +5,126 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Крестики-нолики</title>
   <style>
-  
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #010e0217;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      cursor: pointer;
+      border: 2px solid #f10f0f;
+      user-select: none;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Крестики-нолики</h1>
+
+  <div id="board">
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+    <div class="cell" data-index="5"></div>
+    <div class="cell" data-index="6"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="8"></div>
+  </div>
+
+  <div id="message"></div>
+  <button onclick="resetGame()">Начать заново</button>
+
+  <script>
+    const board = document.querySelectorAll('.cell');
+    let currentPlayer = 'X';
+    let gameState = Array(9).fill('');
+
+    const winningCombinations = [
+      [0,1,2],
+      [3,4,5],
+      [6,7,8],
+      [0,3,6],
+      [1,4,7],
+      [2,5,8],
+      [0,4,8],
+      [2,4,6]
+    ];
+
+    function handleClick(e) {
+      const index = e.target.getAttribute('data-index');
+
+      if (gameState[index] !== '' || checkWinner()) return;
+
+      gameState[index] = currentPlayer;
+      e.target.textContent = currentPlayer;
+
+      if (checkWinner()) {
+        document.getElementById('message').textContent = `Игрок ${currentPlayer} победил! `;
+      } else if (!gameState.includes('')) {
+        document.getElementById('message').textContent = `Ничья! `;
+      } else {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        document.getElementById('message').textContent = `Ход игрока ${currentPlayer}`;
+      }
+    }
+
+    function checkWinner() {
+      return winningCombinations.some(combination => {
+        const [a, b, c] = combination;
+        return gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c];
+      });
+    }
+
+    function resetGame() {
+      gameState.fill('');
+      board.forEach(cell => cell.textContent = '');
+      currentPlayer = 'X';
+      document.getElementById('message').textContent = `Ход игрока ${currentPlayer}`;
+    }
+
+    board.forEach(cell => cell.addEventListener('click', handleClick));
+
+    // Инициализация
+    document.getElementById('message').textContent = `Ход игрока ${currentPlayer}`;
+  </script>
+
+</body>
+</html>
